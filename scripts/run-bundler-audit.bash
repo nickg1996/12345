@@ -5,4 +5,4 @@ set -e
 cd "${0%/*}/.."
 
 echo "Running Bundler-audit"
-bundle exec bundler:audit
+bundle exec bundler-audit

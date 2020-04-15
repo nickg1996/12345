@@ -8,7 +8,7 @@ class PublicationsController < ApplicationController
   # GET /publications.json
   def index
     authorize Publication # Pass in MODEL Class
-    @publications = Publication.paginate(page: params[:page], per_page: params[:per_page] ||= 30).order(created_at: desc)
+    @publications = Publication.paginate(page: params[:page], per_page: params[:per_page] ||= 30).order(created_at: :desc)
     respond_to do |format|
       format.json { render json: Publication.all, status: :ok }
       format.html {}
@@ -18,6 +18,7 @@ class PublicationsController < ApplicationController
   # GET /publications/1
   # GET /publications/1.json
   def show
+    authorize Publication # Pass in MODEL Class
     respond_to do |format|
       format.json { render json: @publication }
       format.html { @publication }
@@ -26,6 +27,7 @@ class PublicationsController < ApplicationController
 
   # GET /publications/new
   def new
+    authorize Publication
     @publication = Publication.new
   end
 
@@ -75,13 +77,23 @@ class PublicationsController < ApplicationController
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
-  def set_publication
-    @publication = Publication.find(params[:id])
-  end
-
   # Only allow a list of trusted parameters through.
   def publication_params
     params.require(:publication).permit(:article_id)
+  end
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_publication
+    begin
+      @publication = Publication.friendly.find(params[:id])
+    rescue StandardError
+      respond_to do |format|
+        format.json { render status: 404, json: { alert: "The publication you're looking for cannot be found" } }
+        format.html { redirect_to publications_path, alert: "The publication you're looking for cannot be found" }
+      end
+    end
+    return unless @publication.present?
+
+    authorize @publication # Pass in Model object
   end
 end

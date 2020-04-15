@@ -5,4 +5,4 @@ set -e
 cd "${0%/*}/.."
 
 echo "Running rspec"
-bundle exec rspec
+sudo docker-compose bundle exec app rspec

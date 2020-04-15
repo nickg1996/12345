@@ -30,8 +30,14 @@ class SubscriptionsController < ApplicationController
 
     respond_to do |format|
       if @subscription.save
-        format.html { redirect_to @subscription, notice: 'Subscription was successfully created.' }
-        format.json { render :show, status: :created, location: @subscription }
+        user_subscription = UserSubscription.new(user_id: user.id, subscription_id: subscription.id)
+        if user_subscription.save
+          format.html { redirect_to @subscription, notice: 'Subscription was successfully created.' }
+          format.json { render :show, status: :created, location: @subscription }
+        else
+          format.html { render :new }
+          format.json { render json: user_subscription.errors, status: :unprocessable_entity }
+        end
       else
         format.html { render :new }
         format.json { render json: @subscription.errors, status: :unprocessable_entity }
@@ -67,11 +73,21 @@ class SubscriptionsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_subscription
-    @subscription = Subscription.find(params[:id])
-  end
+    begin
+      @subscription = Subscription.friendly.find(params[:id])
+    rescue StandardError
+      respond_to do |format|
+        format.json { render status: 404, json: { alert: "The subscription you're looking for cannot be found" } }
+        format.html { redirect_to subscriptions_path, alert: "The subscription you're looking for cannot be found" }
+      end
+    end
+    return unless @subscription.present?
 
-  # Only allow a list of trusted parameters through.
-  def subscription_params
-    params.require(:subscription).permit(:publication_id)
+    authorize @subscription # Pass in Model object
   end
+end
+
+# Only allow a list of trusted parameters through.
+def subscription_params
+  params.require(:subscription).permit(:publication_id)
 end

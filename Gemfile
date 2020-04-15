@@ -7,6 +7,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+
 gem 'pundit' # Lab 10
 
 gem 'friendly_id', '~> 5.1.0' # Lab 9
@@ -51,6 +52,8 @@ gem 'rubocop', require: false
 gem 'rubocop-faker', require: false
 
 group :development, :test do
+  gem 'bundler-audit', require: false
+
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
 

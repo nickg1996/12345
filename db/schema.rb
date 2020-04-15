@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_200_414_011_518) do
+ActiveRecord::Schema.define(version: 20_200_414_011_519) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -54,6 +54,8 @@ ActiveRecord::Schema.define(version: 20_200_414_011_518) do
     t.bigint 'article_id'
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
+    t.string 'uuid'
+    t.string 'slug'
     t.index ['article_id'], name: 'index_publications_on_article_id'
   end
 
@@ -61,6 +63,8 @@ ActiveRecord::Schema.define(version: 20_200_414_011_518) do
     t.bigint 'publication_id'
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
+    t.string 'uuid'
+    t.string 'slug'
     t.index ['publication_id'], name: 'index_subscriptions_on_publication_id'
   end
 
