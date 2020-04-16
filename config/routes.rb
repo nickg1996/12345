@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  root 'articles#index'
+
+  devise_for :users
   resources :subscriptions
   resources :publications
-  root 'articles#index'
-  devise_for :users
   resources :comments
   resources :articles
   resources :users, only: %i[index show]

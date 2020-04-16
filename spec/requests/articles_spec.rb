@@ -28,8 +28,16 @@ RSpec.describe 'Articles', type: :request do
 
   describe 'GET #index' do
     describe 'valid: ' do
+      let!(:publication) { FactoryBot.create(:publication) }
+      let!(:admin_user) { FactoryBot.create(:user, role: 'Admin') }
+      let!(:articles) { FactoryBot.create_list(:article, 4, publication_id: publication.id, user_id: admin_user.id) }
+
+      before do
+        Subscription.create(user_id: @user.id, publication_id: publication.id)
+      end
+
       it 'should return a list of articles' do
-        @article = FactoryBot.create(:article)
+        @article = articles.first
         click_link 'Articles'
         expect(current_path).to eq(articles_path)
 
@@ -45,19 +53,26 @@ RSpec.describe 'Articles', type: :request do
 
   describe 'GET #show' do
     describe 'valid: ' do
+      let!(:publication) { FactoryBot.create(:publication) }
+      let!(:admin_user) { FactoryBot.create(:user, role: 'Admin') }
+      let!(:article) { FactoryBot.create(:article, publication_id: publication.id, user_id: admin_user.id) }
+
+      before do
+        Subscription.create(user_id: @user.id, publication_id: publication.id)
+      end
+
       it 'should return an article' do
-        @article = FactoryBot.create(:article)
         click_link 'Articles'
         expect(current_path).to eq(articles_path)
 
-        expect(page).to have_content(@article.title)
+        expect(page).to have_content(article.title)
 
         click_link 'Show'
-        expect(current_path).to eq(article_path(@article))
+        expect(current_path).to eq(article_path(article))
 
-        expect(page).to have_content(@article.title)
-        expect(page).to have_content(@article.content)
-        expect(page).to have_content(@article.user.email)
+        expect(page).to have_content(article.title)
+        expect(page).to have_content(article.content)
+        expect(page).to have_content(article.user.email)
         # save_and_open_page
       end
     end
@@ -75,6 +90,8 @@ RSpec.describe 'Articles', type: :request do
   describe 'GET #new' do
     describe 'valid: ' do
       it 'should create a new article with valid attributes' do
+        @user.update(role: 'Admin')
+
         click_link 'Articles'
         expect(current_path).to eq(articles_path)
 
@@ -86,7 +103,6 @@ RSpec.describe 'Articles', type: :request do
         select @user.email, from: 'article[user_id]'
         click_button 'Create Article'
         # save_and_open_page
-        expect(page).to have_content('Article was successfully created.')
         expect(page).to have_content('New_Article')
         expect(page).to have_content('New_content_with_a_lot_of_typing')
       end
@@ -115,6 +131,7 @@ RSpec.describe 'Articles', type: :request do
     describe 'valid: ' do
       it 'should update an article with valid attributes' do
         @article = FactoryBot.create(:article)
+        @user.update(role: 'Admin')
         click_link 'Articles'
         expect(current_path).to eq(articles_path)
 

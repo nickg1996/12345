@@ -23,9 +23,20 @@ class ArticlesController < ApplicationController
   # GET /articles.json
   def index
     authorize Article # Pass in Model Class
-    @articles = Article.paginate(page: params[:page], per_page: params[:per_page] ||= 30).order(created_at: :desc)
+    @articles = if current_user.is_admin?
+                  Article.all.paginate(
+                    page: params[:page],
+                    per_page: params[:per_page] ||= 30
+                  ).order(created_at: :desc)
+                else
+                  current_user.subscribed_articles.paginate(
+                    page: params[:page],
+                    per_page: params[:per_page] ||= 30
+                  ).order(created_at: :desc)
+    end
+
     respond_to do |format|
-      format.json { render json: Article.all, status: :ok }
+      format.json { render json: @articles, status: :ok }
       format.html {}
     end
   end
@@ -108,7 +119,7 @@ class ArticlesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def article_params
-    params.require(:article).permit(:title, :content, :category, :user_id)
+    params.require(:article).permit(:title, :content, :category, :user_id, :publication_id)
     # Students, make sure to add the user_id parameter as a symbol here ^^^^^^
   end
 end
