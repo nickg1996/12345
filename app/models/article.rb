@@ -21,9 +21,10 @@ class Article < ApplicationRecord
   # Sets the default find finder to slugged but defaults if not found to default finders like ID
   friendly_id :uuid, use: %i[slugged finders]
 
-  has_many :comments
-  belongs_to :user
+  has_many :comments, dependent: :destroy
 
-  validates :title, presence: true
-  validates :content, presence: true
+  belongs_to :user
+  belongs_to :publication
+
+  validates :title, :content, :category, presence: true
 end
