@@ -3,7 +3,9 @@
 class Publication < ApplicationRecord
   extend FriendlyId
   friendly_id :custom_slug, use: %i[slugged finders]
+
   has_many :articles, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
 
   validates_presence_of :title
 

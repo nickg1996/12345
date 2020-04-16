@@ -33,8 +33,7 @@ class User < ApplicationRecord
   # Sets the default find finder to slugged but defaults if not found to default finders like ID
   friendly_id :uuid, use: %i[slugged finders]
 
-  has_many :user_subscriptions
-  has_many :subscriptions, through: :user_subscriptions
+  has_many :subscriptions, dependent: :destroy
 
   has_many :articles
   has_many :comments
