@@ -13,18 +13,29 @@ RSpec.describe controller_name, type: :controller do
   end
 
   describe 'GET #index' do
-    describe 'valid: ' do
-      it "should return an index of #{model_name}s" do
-        @object = FactoryBot.create(model_name.to_s.underscore.downcase.to_sym)
+    let!(:publication) { FactoryBot.create(:publication) }
+    let!(:admin_user) { FactoryBot.create(:user, role: 'Admin') }
+    let!(:articles) { FactoryBot.create_list(:article, 4, publication_id: publication.id, user_id: admin_user.id) }
+
+    context 'when the logged in user has previously subscribed to various publications' do
+      before do
+        Subscription.create(user_id: @logged_in_user.id, publication_id: publication.id)
+      end
+
+      it 'returns articles from publications from which they subscribe to' do
         get :index
 
-        expect(response).to have_http_status(200)
-        returning_data = JSON.parse(response.body)
-        expect(returning_data[0]['uuid']).to eq(@object.uuid)
+        expect(assigns[:articles].length).to eq 4
+        expect(assigns[:articles]).to match_array(articles)
       end
     end
 
-    describe 'invalid: ' do
+    context 'when the logged in user have no previous subscription' do
+      it 'does not show articles from subscriptions belonging to other users' do
+        get :index
+
+        expect(assigns[:articles]).to be_empty
+      end
     end
   end
 

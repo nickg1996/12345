@@ -2,12 +2,12 @@
 
 class SubscriptionsController < ApplicationController
   before_action :set_subscription, only: %i[show edit update destroy]
-  after_action :verify_authorized
+  after_action :verify_authorized, except: [:index]
 
   # GET /subscriptions
   # GET /subscriptions.json
   def index
-    @subscriptions = Subscription.all
+    @subscriptions = current_user.subscriptions
   end
 
   # GET /subscriptions/1
@@ -25,19 +25,13 @@ class SubscriptionsController < ApplicationController
   # POST /subscriptions
   # POST /subscriptions.json
   def create
-    @subscription = Subscription.new(subscription_params)
+    @subscription = current_user.subscriptions.new(subscription_params)
     authorize @subscription
 
     respond_to do |format|
       if @subscription.save
-        user_subscription = UserSubscription.new(user_id: user.id, subscription_id: subscription.id)
-        if user_subscription.save
-          format.html { redirect_to @subscription, notice: 'Subscription was successfully created.' }
-          format.json { render :show, status: :created, location: @subscription }
-        else
-          format.html { render :new }
-          format.json { render json: user_subscription.errors, status: :unprocessable_entity }
-        end
+        format.html { redirect_to @subscription, notice: 'Subscription was successfully created.' }
+        format.json { render :show, status: :created, location: @subscription }
       else
         format.html { render :new }
         format.json { render json: @subscription.errors, status: :unprocessable_entity }

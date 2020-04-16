@@ -49,4 +49,10 @@ class User < ApplicationRecord
   def is_admin?
     role == ADMIN_ROLE
   end
+
+  def subscribed_articles
+    @subscribed_articles ||= Article.where(
+      publication_id: subscriptions.pluck(:publication_id)
+    )
+  end
 end

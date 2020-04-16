@@ -2,6 +2,7 @@
 
 FactoryBot.define do
   factory :subscription do
-    publication { nil }
+    publication
+    user
   end
 end

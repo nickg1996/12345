@@ -2,6 +2,6 @@
 
 FactoryBot.define do
   factory :publication do
-    article
+    sequence(:title) { |n| "title_#{n}" }
   end
 end

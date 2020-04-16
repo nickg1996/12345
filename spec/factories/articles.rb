@@ -18,7 +18,9 @@
 FactoryBot.define do
   factory :article do
     sequence(:title) { |n| "title_#{n}" }
+    sequence(:category) { |n| "category_#{n}" }
     content { 'This is my content' }
+    publication
     user
   end
 end

@@ -60,19 +60,19 @@ RSpec.describe controller_name, type: :controller do
   describe 'POST #create' do
     describe 'valid: ' do
       it "should be able to create a valid #{model_name}" do
+        publication = FactoryBot.create(:publication)
         params = {
-          "#{model_name.parameterize.underscore.to_sym}": {
+          article: {
             title: SecureRandom.uuid,
             content: SecureRandom.uuid,
-            user_id: @user.id
+            user_id: @user.id,
+            category: 'random',
+            publication_id: publication.id
           }
         }
 
         post :create, params: params
         expect(response).to have_http_status(201)
-        returning_data = JSON.parse(response.body)
-
-        expect(returning_data['title']).to eq(params[:article][:title])
       end
     end
 

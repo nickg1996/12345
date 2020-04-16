@@ -15,7 +15,7 @@ RSpec.describe controller_name, type: :controller do
   describe 'GET #index' do
     describe 'valid: ' do
       it "should return an index of #{model_name}s" do
-        @object = FactoryBot.create(model_name.to_s.underscore.downcase.to_sym)
+        @object = FactoryBot.create(model_name.to_s.underscore.downcase.to_sym, user_id: @logged_in_user.id)
         get :index
 
         expect(response).to have_http_status(200)
