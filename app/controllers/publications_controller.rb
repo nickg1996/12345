@@ -18,7 +18,7 @@ class PublicationsController < ApplicationController
   # GET /publications/1
   # GET /publications/1.json
   def show
-    authorize Publication # Pass in MODEL Class
+    authorize @publication # Pass in MODEL Class
     respond_to do |format|
       format.json { render json: @publication }
       format.html { @publication }
@@ -79,7 +79,7 @@ class PublicationsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def publication_params
-    params.require(:publication).permit(:article_id)
+    params.require(:publication).permit(:title)
   end
 
   # Use callbacks to share common setup or constraints between actions.
