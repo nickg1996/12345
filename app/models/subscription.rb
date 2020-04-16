@@ -3,7 +3,10 @@
 class Subscription < ApplicationRecord
   extend FriendlyId
   friendly_id :uuid, use: %i[slugged finders]
+
   belongs_to :publication
-  has_many :user_subscriptions
-  has_many :users, through: :user_subscriptions
+  belongs_to :user
+
+  validates_uniqueness_of :user_id, scope: :publication_id
+  
 end
