@@ -9,8 +9,6 @@ workflows:
     jobs:
       - build
       - heroku/deploy-via-git: # Use the pre-configured job, deploy-via-git
-          steps:
-            - run: git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git     
           requires:
             - build
           filters:
