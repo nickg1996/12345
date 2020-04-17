@@ -19,8 +19,11 @@ def create_seed_user(is_admin = false, first_name = Faker::Name.first_name, last
 end
 
 def create_article(user = create_seed_user(true))
+  publication = Publication.create(title: Faker::Company.name)
   article = Article.new
   article.title = "Will #{Faker::Company.name} really #{Faker::Company.bs}?"
+  article.category = Faker::App.name
+  article.publication = publication
   paragraph_1 = Faker::Lorem.paragraphs.join(' ')
   paragraph_2 = Faker::Books::Lovecraft.paragraphs.join(' ')
   paragraph_3 = Faker::Hipster.paragraphs.join(' ')

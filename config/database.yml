@@ -6,16 +6,10 @@ default: &default
 development:
   <<: *default
   database: dev
-  host: db
-  username: postgres
-  password:
 
 test:
   <<: *default
-  host: <%= ENV['POSTGRES_HOST'] ||= 'db' %>
-  username: <%= ENV['POSTGRES_USER'] ||= 'postgres' %>
-  password: <%= ENV['POSTGRES_PASSWORD'] ||= '' %>
-  database: test
+  database: legit_news_test
 
 production:
   <<: *default

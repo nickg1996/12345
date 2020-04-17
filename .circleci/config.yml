@@ -4,12 +4,58 @@ orbs:
 
 jobs:
   build:
+    working_directory: ~/12345
     docker:
       - image: circleci/ruby:2.6.3-stretch-node
-    executor: ruby/default
+        environment:
+          RAILS_ENV: test
+          PGHOST: 127.0.0.1
+          PGUSER: root
+      - image: circleci/postgres:9.6.2-alpine
+        environment:
+          POSTGRES_USER: root
+          POSTGRES_DB: circle-test_test
     steps:
       - checkout
+
+      # Restore bundle cache
+      - restore_cache:
+          keys:
+            - 12345-{{ checksum "Gemfile.lock" }}
+            - 12345-
+
+      # Bundle install dependencies
       - run:
-          name: Which bundler?
-          command: bundle -v
-      - ruby/bundle-install
+          name: Install dependencies
+          command: bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs 4 --retry 3
+
+      - run: sudo apt install -y postgresql-client || true
+
+      # Store bundle cache
+      - save_cache:
+          key: 12345-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+      
+      - run:
+          name: Rubocop Lint
+          command: |
+            bundle exec rubocop
+
+      - run:
+          name: Bundler Audit
+          command: |
+            bundle exec bundler-audit --update
+
+      - run:
+          name: Database Setup
+          command: |
+            bundle exec rake db:setup
+
+      - run:
+          name: Run all Rspec
+          command: bundle exec rake
+
+      # Save artifacts
+      - store_test_results:
+          path: /tmp/test-results
