@@ -1,5 +1,7 @@
 # README
 
+[![CircleCI](https://circleci.com/gh/nickg1996/12345.svg?style=svg)](https://app.circleci.com/pipelines/github/nickg1996/12345?branch=master)
+
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
