@@ -47,29 +47,28 @@ RSpec.describe controller_name, type: :controller do
   describe 'POST #create' do
     describe 'valid: ' do
       it "should be able to create a valid #{model_name}" do
-        @article = FactoryBot.create(:article)
+        @publication = FactoryBot.create(:publication)
         params = {
-          "#{model_name.parameterize.underscore.to_sym}": {
-            article_id: @article.id
+          subscription: {
+            publication_id: @publication.id
           }
         }
 
         post :create, params: params
-        expect(response).to have_http_status(403)
+        expect(response).to have_http_status(201)
       end
     end
 
     describe 'invalid: ' do
       it "should not be able to create an invalid #{model_name}" do
         params = {
-          "#{model_name.parameterize.underscore.to_sym}": {
-            article_id: '12345'
+          subscription: {
+            publication_id: 'random_id'
           }
         }
 
         post :create, params: params
-        expect(response).to have_http_status(403)
-        # expect(returning_data['title'][0]).to eq("can't be blank")
+        expect(response).to have_http_status(422)
       end
     end
   end
@@ -78,16 +77,16 @@ RSpec.describe controller_name, type: :controller do
     describe 'valid: ' do
       it "'should be able to change the #{model_name}'s data via ID'" do
         @object = FactoryBot.create(model_name.to_s.underscore.downcase.to_sym)
-        @article = FactoryBot.create(:article)
+        @publication = FactoryBot.create(:publication)
         params = {
           id: @object.id,
           "#{model_name.parameterize.underscore.to_sym}": {
-            article_id: @article.id
+            publication_id: @publication.id
           }
         }
 
         put :update, params: params
-        expect(response).to have_http_status(403)
+        expect(response).to have_http_status(200)
       end
     end
 
@@ -97,12 +96,12 @@ RSpec.describe controller_name, type: :controller do
         params = {
           id: @object.id,
           "#{model_name.parameterize.underscore.to_sym}": {
-            article_id: '12345'
+            publication_id: 'some_random_fake_id'
           }
         }
 
         post :update, params: params
-        expect(response).to have_http_status(403)
+        expect(response).to have_http_status(422)
       end
     end
   end
@@ -113,7 +112,7 @@ RSpec.describe controller_name, type: :controller do
         @object = FactoryBot.create(model_name.to_s.underscore.downcase.to_sym)
 
         post :destroy, params: { id: @object.id }
-        expect(response).to have_http_status(403)
+        expect(response).to have_http_status(204)
       end
     end
   end
