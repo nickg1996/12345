@@ -13,7 +13,7 @@
   <tbody>
     <% @subscriptions.each do |subscription| %>
       <tr>
-        <td><%= subscription.publication %></td>
+        <td><%= subscription.publication.title %></td>
         <td><%= link_to 'Show', subscription %></td>
         <td><%= link_to 'Edit', edit_subscription_path(subscription) %></td>
         <td><%= link_to 'Destroy', subscription, method: :delete, data: { confirm: 'Are you sure?' } %></td>

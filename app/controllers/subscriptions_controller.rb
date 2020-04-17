@@ -2,7 +2,6 @@
 
 class SubscriptionsController < ApplicationController
   before_action :set_subscription, only: %i[show edit update destroy]
-  after_action :verify_authorized, except: [:index]
 
   # GET /subscriptions
   # GET /subscriptions.json
@@ -26,7 +25,6 @@ class SubscriptionsController < ApplicationController
   # POST /subscriptions.json
   def create
     @subscription = current_user.subscriptions.new(subscription_params)
-    authorize @subscription
 
     respond_to do |format|
       if @subscription.save
@@ -76,8 +74,6 @@ class SubscriptionsController < ApplicationController
       end
     end
     return unless @subscription.present?
-
-    authorize @subscription # Pass in Model object
   end
 end
 

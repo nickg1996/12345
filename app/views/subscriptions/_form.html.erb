@@ -13,7 +13,7 @@
 
   <div class="field">
     <%= form.label :publication_id %>
-    <%= form.text_field :publication_id %>
+    <%= form.collection_select :publication_id, Publication.all, :id, :title, { prompt: "Please select a publication" } %>
   </div>
 
   <div class="actions">
