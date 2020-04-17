@@ -44,6 +44,10 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
+    airbrake (10.0.2)
+      airbrake-ruby (~> 4.13)
+    airbrake-ruby (4.14.0)
+      rbtree3 (~> 0.5)
     annotate (3.1.1)
       activerecord (>= 3.2, < 7.0)
       rake (>= 10.4, < 14.0)
@@ -229,6 +233,7 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
+    rbtree3 (0.6.0)
     responders (3.0.0)
       actionpack (>= 5.0)
       railties (>= 5.0)
@@ -332,6 +337,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  airbrake
   annotate
   awesome_print
   better_errors
