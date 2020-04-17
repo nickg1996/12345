@@ -45,7 +45,7 @@ jobs:
       - run:
           name: Bundler Audit
           command: |
-            bundle exec bundler-audit
+            bundle exec bundler-audit --update
 
       - run:
           name: Database Setup
