@@ -37,8 +37,9 @@ Heroku is a cloud platform as a service supporting several programming languages
 * Set up Bundler
 * Run 'bundle install' to get Rubocop and Bundler-Audit (along with everything else)
 * Test Pushing to GitHub
+* Check Builds on CircleCI
 * Run 'sudo docker-compose up --build' OR 'Open App' on Heroku
-* Create a User Account OR Login with Supplied Info
+* Create a User Account OR Login with Supplied Info...
 
 ## Login Information
 ### Non-Admin
