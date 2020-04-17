@@ -5,7 +5,7 @@ default: &default
 
 development:
   <<: *default
-  database: dev
+  database: legit_news_dev
 
 test:
   <<: *default
