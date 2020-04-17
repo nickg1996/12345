@@ -46,6 +46,7 @@ gem 'jbuilder', '~> 2.5'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+gem 'airbrake'
 gem 'pg', '~> 0.21'
 gem 'rubocop', require: false
 gem 'rubocop-faker', require: false
