@@ -33,7 +33,7 @@ class ArticlesController < ApplicationController
                     page: params[:page],
                     per_page: params[:per_page] ||= 30
                   ).order(created_at: :desc)
-    end
+                end
 
     respond_to do |format|
       format.json { render json: @articles, status: :ok }
