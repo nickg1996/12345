@@ -36,6 +36,16 @@ jobs:
           key: 12345-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
+      
+      - run:
+          name: Rubocop Lint
+          command: |
+            bundle exec rubocop
+
+      - run:
+          name: Bundler Audit
+          command: |
+            bundle exec bundler-audit
 
       - run:
           name: Database Setup
@@ -43,7 +53,7 @@ jobs:
             bundle exec rake db:setup
 
       - run:
-          name: Parallel RSpec
+          name: Run all Rspec
           command: bundle exec rake
 
       # Save artifacts
