@@ -2,7 +2,7 @@
 # Author: Nicholas Gardiner
 
 ## Embedded Badge
-[![CircleCI](https://circleci.com/gh/nickg1996/12345.svg?style=svg)](https://app.circleci.com/pipelines/github/nickg1996/12345?branch=master)
+[![CircleCI](https://circleci.com/gh/nickg1996/web615-final-assignment.svg?style=svg)](https://app.circleci.com/pipelines/github/nickg1996/web615-final-assignment?branch=master)
 
 ## Technologies Used
 
